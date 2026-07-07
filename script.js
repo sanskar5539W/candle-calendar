@@ -4,18 +4,33 @@
     "July", "August", "September", "October", "November", "December"
   ];
 
-  // Fixed-date holidays (month is 0-indexed). Add more as needed.
-  const holidays = {
+  // Indian holidays. Fixed-date ones (month is 0-indexed) apply every year.
+  const fixedHolidays = {
     "0-1": "New Year's Day",
-    "1-14": "Valentine's Day",
-    "2-17": "St. Patrick's Day",
-    "6-4": "Independence Day",
-    "9-31": "Halloween",
-    "10-11": "Veterans Day",
-    "10-27": "Thanksgiving",
-    "11-24": "Christmas Eve",
-    "11-25": "Christmas Day",
-    "11-31": "New Year's Eve"
+    "0-14": "Makar Sankranti / Pongal",
+    "0-26": "Republic Day",
+    "3-14": "Ambedkar Jayanti",
+    "4-1": "May Day",
+    "7-15": "Independence Day",
+    "9-2": "Gandhi Jayanti",
+    "11-25": "Christmas Day"
+  };
+
+  // Movable festivals shift each year (lunar calendar) — keyed year-month-day.
+  const movableHolidays = {
+    "2026-1-15": "Maha Shivratri",
+    "2026-2-3": "Holika Dahan",
+    "2026-2-4": "Holi",
+    "2026-2-21": "Eid al-Fitr",
+    "2026-3-3": "Good Friday",
+    "2026-4-27": "Eid al-Adha (Bakrid)",
+    "2026-7-26": "Eid-e-Milad",
+    "2026-7-28": "Raksha Bandhan",
+    "2026-8-4": "Janmashtami",
+    "2026-8-14": "Ganesh Chaturthi",
+    "2026-9-21": "Dussehra",
+    "2026-10-8": "Diwali",
+    "2026-10-24": "Guru Nanak Jayanti"
   };
 
   const EVENTS_KEY = "candleCalendarEvents";
@@ -44,6 +59,9 @@
   const prevBtn = document.getElementById("prevMonth");
   const nextBtn = document.getElementById("nextMonth");
 
+  const eventReaction = document.getElementById("eventReaction");
+  const reactionImages = ["assets/reaction.png", "assets/reaction2.png", "assets/reaction3.jpg"];
+  let reactionIndex = 0;
   const overlay = document.getElementById("overlay");
   const closeModalBtn = document.getElementById("closeModal");
   const modalDate = document.getElementById("modalDate");
@@ -58,8 +76,8 @@
     return `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
   }
 
-  function isHoliday(m, d) {
-    return holidays[`${m}-${d}`];
+  function isHoliday(y, m, d) {
+    return movableHolidays[`${y}-${m}-${d}`] || fixedHolidays[`${m}-${d}`];
   }
 
   function buildCandle(state) {
@@ -98,7 +116,7 @@
 
     for (let d = 1; d <= daysInMonth; d++) {
       const key = dateKey(viewYear, viewMonth, d);
-      const holidayName = isHoliday(viewMonth, d);
+      const holidayName = isHoliday(viewYear, viewMonth, d);
       const eventText = events[key];
 
       const cell = document.createElement("div");
@@ -166,13 +184,24 @@
     activeKey = null;
   }
 
+  function showEventReaction() {
+    eventReaction.classList.remove("show");
+    eventReaction.src = reactionImages[reactionIndex];
+    reactionIndex = (reactionIndex + 1) % reactionImages.length;
+    void eventReaction.offsetWidth; // restart animation if already playing
+    eventReaction.classList.add("show");
+  }
+
   saveEventBtn.addEventListener("click", () => {
     if (!activeKey) return;
     const text = eventInput.value.trim();
     if (text) {
       const isNew = !events[activeKey];
       events[activeKey] = text;
-      if (isNew) justAddedKey = activeKey;
+      if (isNew) {
+        justAddedKey = activeKey;
+        showEventReaction();
+      }
     } else {
       delete events[activeKey];
     }

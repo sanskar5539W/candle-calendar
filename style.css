@@ -336,6 +336,30 @@ body {
 .btn-secondary { background: var(--red-dark); color: #fff; }
 .hidden { display: none !important; }
 
+/* ---------- Event reaction popup ---------- */
+.event-reaction {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: min(260px, 40vw);
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.event-reaction.show {
+  animation: reactionPopup 4s ease forwards;
+}
+
+@keyframes reactionPopup {
+  0%   { opacity: 0; }
+  25%  { opacity: 1; }
+  75%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
 @media (max-width: 560px) {
   .day-cell { min-height: 74px; padding: 4px; }
   .app-header h1 { font-size: 1.2rem; min-width: 0; }
