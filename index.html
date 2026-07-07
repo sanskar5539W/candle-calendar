@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Candle Calendar</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+  <header class="app-header">
+    <button id="prevMonth" class="nav-btn" aria-label="Previous month">&#10094;</button>
+    <h1 id="monthYear">Month Year</h1>
+    <button id="nextMonth" class="nav-btn" aria-label="Next month">&#10095;</button>
+  </header>
+
+  <div class="legend">
+    <div class="legend-item"><span class="mini-candle mini-red"></span> Holiday</div>
+    <div class="legend-item"><span class="mini-candle mini-grey"></span> Regular day</div>
+    <div class="legend-item"><span class="mini-candle mini-green"></span> Your event</div>
+  </div>
+
+  <div class="weekdays">
+    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+  </div>
+
+  <div id="calendarGrid" class="calendar-grid"></div>
+</div>
+
+<div id="overlay" class="overlay hidden">
+  <div class="modal">
+    <button id="closeModal" class="modal-close" aria-label="Close">&times;</button>
+    <h2 id="modalDate">Date</h2>
+    <p id="modalHoliday" class="modal-holiday hidden"></p>
+    <label for="eventInput">Event</label>
+    <textarea id="eventInput" rows="3" placeholder="Add an event for this day..."></textarea>
+    <div class="modal-actions">
+      <button id="deleteEvent" class="btn btn-secondary hidden">Remove event</button>
+      <button id="saveEvent" class="btn btn-primary">Save</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
